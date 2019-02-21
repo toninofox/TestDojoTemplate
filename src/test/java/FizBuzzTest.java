@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
@@ -23,15 +22,12 @@ public class FizBuzzTest {
 	private Printer printer;
 	private FizBuzz fizBuzz;
 	
-	@Mock
-	private MyGreatDatabase database;
-	
 	@Captor
 	public ArgumentCaptor<String> captor;
 	
 	@Before
 	public void setUp() throws Exception {
-		fizBuzz = new FizBuzz(printer,database);
+		fizBuzz = new FizBuzz(printer);
 	}
 
 	@Test
@@ -60,11 +56,12 @@ public class FizBuzzTest {
 
 	@Test
 	public void shouldPrintBuzzInsteadOfMultipleOfFiveButNotMultipleOfThree() throws Exception {
-		when(database.getFizzNumber()).thenReturn(4);
 		fizBuzz.doIt();
 		checkPrinter(times(100));
 		List<String> allValues = captor.getAllValues();
-		assertThat(allValues.get(3), Matchers.equalTo("Fizz"));
+		assertThat(allValues.get(4), Matchers.equalTo("Buzz"));
+		assertThat(allValues.get(10), Matchers.equalTo("11"));
+		assertThat(allValues.get(99), Matchers.equalTo("Buzz"));
 	}
 
 	
